@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single sign on with github</title>
+    <base href="/"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+
+</head>
+<body>
+    <h1>#MisionTic 2022</h1>
+    <div class="container noautenticado">
+        Para inciar sesión con Github: <a href="/oauth2/authorization/github">Click aqui</a>
+    </div>
+    <div class="container autenticado" style="display: none;">
+        Autenticado como <span id="user"> </span>
+    </div>
+
+
+    </div>
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"> </script>
+    <script type="text/javascript">
+    
+        $.get('/user',function(data){
+            $('#user').html(data.name);
+            $('.noautenticado').hide();
+            $('.autenticado').show();
+        });
+    
+    </script>
+
+</body>
+</html>
