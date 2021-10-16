@@ -1,6 +1,5 @@
 package co.edu.usa.singindemo.api;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
@@ -15,23 +14,43 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserController extends WebSecurityConfigurerAdapter {
+public class UserController extends WebSecurityConfigurerAdapter{
+    
     @GetMapping("/user")
-    public Map<String, Object> getUser(@AuthenticationPrincipal OAuth2User principal){
+    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
         return Collections.singletonMap("name", principal.getAttribute("name"));
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-       http.cors().and().csrf().disable().formLogin().disable().httpBasic().disable()
-       .authorizeRequests( a -> a.antMatchers("/","/error","/webjars/**").permitAll().anyRequest().authenticated() 
-       ).exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-       ).csrf(c -> c.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-       ).logout(l -> l.logoutSuccessUrl("/").permitAll()
-       ).oauth2Login();
-
-       //http.cors().and().csrf().disable();
-    }
-
+    	http.cors()
+        .and()
+    //.sessionManagement()
+    //    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    //    .and()
+    .csrf()
+        .disable()
+    .formLogin()
+        .disable()
+    .httpBasic()
+        .disable()
+			.authorizeRequests(a -> a
+				.antMatchers("/", "/error", "/webjars/**").permitAll()
+				.anyRequest().authenticated()
+			)
+			.exceptionHandling(e -> e
+				.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+			)
+			.csrf(c -> c
+				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+			)
+			.logout(l -> l
+				.logoutSuccessUrl("/").permitAll()
+			)
+			.oauth2Login();
+       
+        
+      // http.cors().and().csrf().disable();
     
- }
+    }
+}
